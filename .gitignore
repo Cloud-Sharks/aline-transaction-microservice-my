@@ -51,3 +51,4 @@ local.properties
 __pycache__/
 *.pyc
 .pytest_cache/
+*_test.py
