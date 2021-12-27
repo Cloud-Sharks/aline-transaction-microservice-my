@@ -1,13 +1,17 @@
 import requests
+import logging
+import os
 from faker import Faker
 
 def populate_transaction(auth, acc_nums):
+    logging.basicConfig(level=logging.INFO, filename="aline_files/core-my/docker-data/aline_log.log", filemode='a', format='%(process)d - [%(levelname)s ] - %(message)s')
     fake = Faker()
-    register_url = 'http://localhost:8073/transactions'
+    # transaction_url = 'http://localhost:8073/transactions'
+    transaction_url = f"{os.environ.get('TRANS_URL')}/transactions"
 
     transaction_entries = len(acc_nums)
     for i in range(transaction_entries):
-        register_info = {
+        transaction_info = {
             "amount" : fake.numerify('#####'),
             "date" : fake.numerify('201#-0%-1#'),
             "initialBalance" : fake.numerify('####'),
@@ -16,14 +20,11 @@ def populate_transaction(auth, acc_nums):
             "type" : fake.random_element(elements=('WITHDRAWAL','TRANSFER_OUT','TRANSFER_IN','DEPOSIT')),
             "accountNumber" : acc_nums[i]
         }
-        reg_trans = requests.post(register_url, json=register_info, headers=auth)
-        # print(reg_trans.text)
+        logging.info(f'Trying to post {transaction_info}')
+        try:
+            reg_trans = requests.post(transaction_url, json=transaction_info, headers=auth)
+            logging.info('Transaction posted')
+        except Exception as e:
+            logging.error(f'Error entering transaction: ', exc_info=True)
 
-# login_info = {
-#     'username' : 'adminUser',
-#     'password' : 'Password*8'
-# }
-# login_response = requests.post('http://localhost:8070/login', json=login_info)
-# bearer_token = login_response.headers['Authorization']
-# auth = {'Authorization' : bearer_token}
-# populate_transaction(auth)
+print('', end='')
