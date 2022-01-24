@@ -4,13 +4,10 @@ pipeline{
 
     environment{
         //TODO: set env vars
-        GIT_REPO = 'https://github.com/markyates7748/aline-transaction-microservice-my.git'
-        REPO_BRANCH = 'dev'
-        COMMIT_HASH = "${sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()}"
-        AWS_ID = credentials('AWS_ID')
+        COMMIT_HASH = "initial"
         SERVICE_NAME = 'transaction-ms'
-        REGION = 'us-west-1'
-        APP_NAME = 'alinefinancial-my'
+        REGION = 'us-east-1'
+        APP_NAME = 'my-transaction-microservice'
         APP_ENV = 'dev'
         ORGANIZATION = 'Aline-Financial-MY'
         PROJECT_NAME = 'aline-transaction-microservice-my'
@@ -20,7 +17,7 @@ pipeline{
         stage('Checkout'){
             steps{
                 //TODO: get branch
-                git branch: '${REPO_BRANCH}', url: '${GIT_REPO}'
+                git branch: 'dev', url: 'https://github.com/markyates7748/aline-transaction-microservice-my.git'
             }
         }
         stage('Test'){
@@ -45,7 +42,7 @@ pipeline{
         stage('Push Image'){
             steps{
                 //TODO: push image to cloud
-                sh'aws ecr get-login-password --region ${REGION} | docker login --username AWS --password-stdin --password-stdin ${AWS_ID}.dkr.ecr.${REGION}.amazonaws.com'
+                //sh'aws ecr get-login-password --region ${REGION} | docker login --username AWS --password-stdin --password-stdin ${AWS_ID}.dkr.ecr.${REGION}.amazonaws.com'
                 sh'docker push ${AWS_ID}.dkr.ecr.${REGION}.amazonaws.com/${APP_NAME}/${SERVICE_NAME}'
             }
         }
