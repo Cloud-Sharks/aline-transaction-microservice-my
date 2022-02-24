@@ -51,8 +51,8 @@ values (1, 1),
        (2, 3),
        (3, 3);
 
-insert into merchant (code, name) values ('ALINE', 'Aline Financial');
-insert into merchant (code, name) values ('NONE', 'NONE');
+-- insert into merchant (code, name) values ('ALINE', 'Aline Financial');
+-- insert into merchant (code, name) values ('NONE', 'NONE');
 
 insert into transaction (id, type, method, amount, date, account_id, initial_balance, posted_balance, status, merchant_code, state, description)
 values (1, 'WITHDRAWAL', 'ACH', 10000, '2021-08-01', 1, 100000, 90000, 'APPROVED', 'ALINE', 'POSTED', 'Batman is Bruce Wayne.');
